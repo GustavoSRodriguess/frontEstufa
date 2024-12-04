@@ -1,5 +1,5 @@
 import { useAuth } from "../../contexts/AuthContext";
-import ThemeToggle from "../ui/ThemeToggle";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
     const { user, logout } = useAuth();

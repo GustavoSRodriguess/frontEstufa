@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export interface ApiResponse {
     current: {
@@ -31,7 +31,7 @@ export const getRoasterData = async (roasterId: string): Promise<ApiResponse> =>
         return data;
     } catch (error) {
         console.error('Erro ao buscar dados:', error);
-        // Retornar dados mockados em caso de erro
+        // Dados mockados em caso de erro
         return {
             current: {
                 temperature: 70,
@@ -40,23 +40,13 @@ export const getRoasterData = async (roasterId: string): Promise<ApiResponse> =>
             analysis: {
                 quality: 85,
                 risk: 15,
-                recommendations: ['Condições ideais para o café']
+                recommendations: ["Erro na conexão com o servidor"]
             },
             history: {
                 [new Date().toISOString()]: {
                     temperature: 70,
                     humidity: 65,
                     timestamp: new Date().toISOString()
-                },
-                [new Date(Date.now() - 300000).toISOString()]: {
-                    temperature: 71,
-                    humidity: 64,
-                    timestamp: new Date(Date.now() - 300000).toISOString()
-                },
-                [new Date(Date.now() - 600000).toISOString()]: {
-                    temperature: 69,
-                    humidity: 66,
-                    timestamp: new Date(Date.now() - 600000).toISOString()
                 }
             }
         };

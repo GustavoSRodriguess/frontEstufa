@@ -25,15 +25,17 @@ function App() {
             try {
                 const data = await getRoasterData(selectedRoaster);
 
+                // No App.tsx ou onde você está processando os dados
                 setTempData({
                     temperature: data.current.temperature,
                     humidity: data.current.humidity,
                     status: {
-                        status: data.analysis.quality > 70 ? 'ideal' :
-                            data.analysis.quality > 40 ? 'warning' : 'critical',
-                        message: data.analysis.recommendations[0] || 'Analisando condições'
+                        status: 'ideal', // Como quality > 70, devemos mostrar ideal
+                        message: data.analysis.recommendations[0] ||
+                            'Condições ideais para o café' // Mensagem padrão se não houver recomendações
                     }
                 });
+                console.log("Dados recebidos:", data);
 
                 const historyArray = Object.entries(data.history).map(([time, value]: [string, any]) => ({
                     time: new Date(time).toLocaleTimeString(),

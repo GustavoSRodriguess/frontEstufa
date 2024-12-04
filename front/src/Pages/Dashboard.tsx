@@ -1,9 +1,9 @@
-import StatusCard from '../components/status/StatusCard';
-import TemperatureChart from '../components/charts/TemperatureChart';
-import RoasterSelector from '../components/roasters/RoasterSelector';
-import AlertSystem from '../components/alertsystem/AlertSystem';
+import StatusCard from '../components/dashboard/StatusCard';
+import TemperatureChart from '../components/dashboard/TemperatureChart';
+import RoasterSelector from '../components/dashboard/RoasterSelector';
+import AlertSystem from '../components/dashboard/AlertSystem';
 import { DashboardProps } from '../types';
-import Navbar from '../components/navbar/Navbar';
+import Navbar from '../components/ui/Navbar';
 
 const roasters = [
   { id: '1', name: 'Estufa 01', status: 'active' as const },
@@ -43,7 +43,7 @@ const Dashboard: React.FC<DashboardProps> = ({
         />
 
         <div className="space-y-6">
-          
+
           <AlertSystem
             temperature={tempData.temperature}
             humidity={tempData.humidity}

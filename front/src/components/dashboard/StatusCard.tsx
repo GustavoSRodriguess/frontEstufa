@@ -1,17 +1,19 @@
 import React from 'react';
 import { ThermometerSun, AlertTriangle, CheckCircle } from 'lucide-react';
 import { StatusCardProps } from '../../types';
+import { getStatusDisplay } from '../ui/StatusDisplay';
 
 const StatusCard: React.FC<StatusCardProps> = ({
     temperature,
-    humidity,
-    status
+    humidity
 }) => {
     const getTemperatureColor = (temp: number): string => {
         if (temp < 65) return 'text-blue-500 dark:text-blue-400';
         if (temp > 75) return 'text-red-500 dark:text-red-400';
         return 'text-green-500 dark:text-green-400';
     };
+
+    const currentStatus = getStatusDisplay(temperature, humidity);
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-xl border dark:border-gray-700 p-4">
@@ -38,21 +40,21 @@ const StatusCard: React.FC<StatusCardProps> = ({
                 <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg">
                     <span className="block text-sm text-gray-600 dark:text-gray-400 mb-1">Status</span>
                     <div className="flex items-center gap-2">
-                        {status.status === 'ideal' ? (
+                        {currentStatus.status === 'ideal' ? (
                             <>
                                 <CheckCircle className="w-5 h-5 text-green-500 dark:text-green-400" />
                                 <span className="text-green-700 dark:text-green-300">
-                                    {status.message}
+                                    {currentStatus.message}
                                 </span>
                             </>
                         ) : (
                             <>
                                 <AlertTriangle className="w-5 h-5 text-yellow-500 dark:text-yellow-400" />
-                                <span className={`${status.status === 'critical'
+                                <span className={`${currentStatus.status === 'critical'
                                         ? 'text-red-700 dark:text-red-300'
                                         : 'text-yellow-700 dark:text-yellow-300'
                                     }`}>
-                                    {status.message}
+                                    {currentStatus.message}
                                 </span>
                             </>
                         )}
