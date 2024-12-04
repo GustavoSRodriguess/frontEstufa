@@ -35,3 +35,15 @@
     @apply text-sm text-gray-500;
   }
 }
+
+:root {
+  background-color: theme('colors.white');
+}
+
+:root.dark {
+  background-color: theme('colors.gray.900');
+}
+
+body {
+  min-height: 100vh;
+}

@@ -45,15 +45,14 @@ const AlertSystem: React.FC<AlertSystemProps> = ({
         checkThresholds();
     }, [temperature, humidity, thresholds, isEnabled]);
 
-    // Aqui está como a função addNotification deveria ser:
     const addNotification = (
-        status: CoffeeStatus['status'], // Mudou de type para status
+        status: CoffeeStatus['status'], 
         title: string,
         message: string
     ): void => {
         const newNotification: Notification = {
             id: Date.now(),
-            status, // Usando status ao invés de type
+            status, 
             title,
             message,
             timestamp: new Date()
