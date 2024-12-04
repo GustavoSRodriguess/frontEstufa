@@ -1,8 +1,10 @@
-from typing import Dict, Any
 from datetime import datetime, timedelta
+import json
 
 class FirebaseService:
     def __init__(self):
+        # Removendo a inicialização do Firebase por enquanto
+        print("Iniciando serviço com dados mockados")
         self.mock_data = {
             "1": {
                 "current": {
@@ -22,15 +24,6 @@ class FirebaseService:
             }
         }
 
-        # Comentar mock e descomentar Firebase quando for usar
-        """
-        cred = credentials.Certificate("path/to/serviceAccountKey.json")
-        firebase_admin.initialize_app(cred, {
-            'databaseURL': 'your-database-url'
-        })
-        self.ref = db.reference('/')
-        """
-
     def _generate_mock_history(self, base_temp=72, points=100):
         history = {}
         now = datetime.now()
@@ -45,27 +38,11 @@ class FirebaseService:
         
         return history
 
-    def get_latest_data(self, roaster_id: str) -> Dict[str, Any]:
-        # Mock data
-        if roaster_id in self.mock_data:
-            return self.mock_data[roaster_id]["current"]
-            
-        # Firebase implementation (comentado)
-        """
-        return self.ref.child(f'roasters/{roaster_id}/current').get()
-        """
-        
-        return None
+    def get_latest_data(self, roaster_id: str):
+        print(f"Buscando dados para roaster {roaster_id}")
+        return self.mock_data.get(roaster_id, {}).get("current")
 
     def get_historical_data(self, roaster_id: str, limit: int = 100):
-        # Mock data
-        if roaster_id in self.mock_data:
-            history = self.mock_data[roaster_id]["history"]
-            return dict(list(history.items())[:limit])
-            
-        # Firebase implementation (comentado)
-        """
-        return self.ref.child(f'roasters/{roaster_id}/history').limit_to_last(limit).get()
-        """
-        
-        return None
+        print(f"Buscando histórico para roaster {roaster_id}")
+        history = self.mock_data.get(roaster_id, {}).get("history", {})
+        return dict(list(history.items())[:limit])
