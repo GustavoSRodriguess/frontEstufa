@@ -10,10 +10,17 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173",  
+    "http://localhost:3000",  
+    "https://front-estufa-pac.vercel.app",  
+    "*"
+]
+
 # Configuração CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
