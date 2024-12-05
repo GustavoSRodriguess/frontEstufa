@@ -48,3 +48,18 @@ export default tseslint.config({
   },
 })
 ```
+
+## To Start the backend please do this
+```bash
+cd back/
+
+# Windows
+venv\Scripts\activate
+# Linux/Mac
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+python -m uvicorn app.main:app --reload --port 8080
+```
+
