@@ -7,7 +7,7 @@ import Navbar from '../components/ui/Navbar';
 
 const roasters = [
   { id: '1', name: 'Estufa 01', status: 'active' as const },
-  { id: '2', name: 'Estufa 02', status: 'active' as const },
+  { id: '2', name: 'Estufa 02', status: 'inactive' as const },
   { id: '3', name: 'Estufa 03', status: 'inactive' as const },
 ];
 
@@ -23,8 +23,9 @@ const defaultThresholds = {
 };
 
 const Dashboard: React.FC<DashboardProps> = ({
+  error,
   selectedRoaster,
-  setSelectedRoaster,
+  onRoasterChange,
   tempData,
   historyData
 }) => {
@@ -36,14 +37,19 @@ const Dashboard: React.FC<DashboardProps> = ({
           Monitoramento do Café
         </h1>
 
+        {error && (
+          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            {error}
+          </div>
+        )}
+
         <RoasterSelector
           roasters={roasters}
           selectedRoaster={selectedRoaster}
-          onSelect={setSelectedRoaster}
+          onSelect={onRoasterChange}
         />
 
         <div className="space-y-6">
-
           <AlertSystem
             temperature={tempData.temperature}
             humidity={tempData.humidity}

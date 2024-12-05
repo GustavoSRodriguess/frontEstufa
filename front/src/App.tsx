@@ -9,48 +9,60 @@ import Dashboard from './Pages/Dashboard';
 import { TempData, HistoryDataPoint } from './types';
 
 function App() {
-    const [selectedRoaster, setSelectedRoaster] = useState('1');
+    const [error, setError] = useState<string | null>(null);
+    const [selectedRoaster, setSelectedRoaster] = useState("1");
     const [tempData, setTempData] = useState<TempData>({
-        temperature: 70,
-        humidity: 65,
+        temperature: 0,
+        humidity: 0,
         status: {
-            status: 'ideal',
-            message: 'Condições ideais para o café'
+            status: 'loading',
+            message: 'Carregando dados...'
         }
     });
     const [historyData, setHistoryData] = useState<HistoryDataPoint[]>([]);
 
+    const handleRoasterChange = (roasterId: string) => {
+        if (roasterId !== "1") {
+            setError("Sistema configurado apenas para uma máquina");
+            setSelectedRoaster("1");
+            return;
+        }
+        setError(null);
+        setSelectedRoaster(roasterId);
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getRoasterData(selectedRoaster);
+                const data = await getRoasterData("1");
 
-                // No App.tsx ou onde você está processando os dados
                 setTempData({
                     temperature: data.current.temperature,
                     humidity: data.current.humidity,
                     status: {
-                        status: 'ideal', // Como quality > 70, devemos mostrar ideal
-                        message: data.analysis.recommendations[0] ||
-                            'Condições ideais para o café' // Mensagem padrão se não houver recomendações
+                        status: data.analysis.quality > 70 ? 'ideal' : 'warning',
+                        message: data.analysis.recommendations[0] || 'Condições ideais para o café'
                     }
                 });
-                console.log("Dados recebidos:", data);
 
-                const historyArray = Object.entries(data.history).map(([time, value]: [string, any]) => ({
-                    time: new Date(time).toLocaleTimeString(),
-                    temperature: value.temperature,
-                    humidity: value.humidity
-                }));
+                const historyArray = Object.entries(data.history)
+                    .map(([time, value]: [string, any]) => ({
+                        time: new Date(time).toLocaleTimeString('pt-BR'),
+                        temperature: value.temperature,
+                        humidity: value.humidity
+                    }))
+                    .sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 
                 setHistoryData(historyArray);
             } catch (error) {
-                console.error('Erro:', error);
+                setError("Erro ao carregar dados do sistema");
             }
         };
 
         fetchData();
-    }, [selectedRoaster]);
+        const interval = setInterval(fetchData, 50000);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <BrowserRouter>
@@ -63,8 +75,9 @@ function App() {
                             element={
                                 <ProtectedRoute>
                                     <Dashboard
+                                        error={error}
                                         selectedRoaster={selectedRoaster}
-                                        setSelectedRoaster={setSelectedRoaster}
+                                        onRoasterChange={handleRoasterChange}
                                         tempData={tempData}
                                         historyData={historyData}
                                     />

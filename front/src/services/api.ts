@@ -21,17 +21,19 @@ export interface ApiResponse {
 
 export const getRoasterData = async (roasterId: string): Promise<ApiResponse> => {
     try {
-        const response = await fetch(`${API_URL}/analyze/${roasterId}`);
+        console.log('Fazendo requisição para:', `${API_URL}/analyze`);
+        const response = await fetch(`${API_URL}/analyze`);
 
         if (!response.ok) {
+            console.log('Resposta não ok:', await response.text());
             throw new Error('Falha ao buscar dados');
         }
 
         const data = await response.json();
+        console.log('Dados recebidos da API:', data);
         return data;
     } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-        // Dados mockados em caso de erro
+        console.error(error);
         return {
             current: {
                 temperature: 70,
@@ -40,7 +42,7 @@ export const getRoasterData = async (roasterId: string): Promise<ApiResponse> =>
             analysis: {
                 quality: 85,
                 risk: 15,
-                recommendations: ["Erro na conexão com o servidor"]
+                recommendations: ["Dados mockados - API indisponível"]
             },
             history: {
                 [new Date().toISOString()]: {

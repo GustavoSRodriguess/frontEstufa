@@ -1,5 +1,5 @@
 export interface CoffeeStatus {
-    status: 'ideal' | 'warning' | 'critical';
+    status: 'ideal' | 'warning' | 'critical' | 'error' | 'loading';
     message: string;
 }
 
@@ -100,8 +100,9 @@ export interface HistoryDataPoint {
 }
 
 export interface DashboardProps {
+    error: string | null;
     selectedRoaster: string;
-    setSelectedRoaster: (id: string) => void;
+    onRoasterChange: (id: string) => void;
     tempData: TempData;
     historyData: HistoryDataPoint[];
 }
