@@ -34,7 +34,7 @@ function App() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getRoasterData("1");
+                const data = await getRoasterData();
 
                 setTempData({
                     temperature: data.current.temperature,
