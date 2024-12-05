@@ -45,7 +45,7 @@ export interface AlertThresholds {
 
 export interface Notification {
     id: string;
-    status: CoffeeStatus['status'];
+    status: 'ideal' | 'warning' | 'critical';
     title: string;
     message: string;
     timestamp: Date;

@@ -19,7 +19,7 @@ export interface ApiResponse {
     };
 }
 
-export const getRoasterData = async (roasterId: string): Promise<ApiResponse> => {
+export const getRoasterData = async (): Promise<ApiResponse> => {
     try {
         console.log('Fazendo requisição para:', `${API_URL}/analyze`);
         const response = await fetch(`${API_URL}/analyze`);
